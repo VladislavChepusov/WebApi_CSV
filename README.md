@@ -38,6 +38,8 @@
 ## Стек
 - .NET 6
 - WebApi
+- Microsoft.EntityFrameworkCore
+- Microsoft.EntityFrameworkCore.SqlServer
 - Swagger
-- MS SQL
-- Ef core
+- СУБД MS SQL
+
