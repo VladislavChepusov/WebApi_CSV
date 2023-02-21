@@ -27,8 +27,9 @@ namespace DAL
 
 
         // Оповещаем об появлении новых таблиц
-        public DbSet<User> Users { get; set; } = null!;
-        public DbSet<dataInfo> dataInfos { get; set; } = null!;
+        public DbSet<Values> Values { get; set; } = null!;
+        public DbSet<Results> Results { get; set; } = null!;
+
 
     }
 }
