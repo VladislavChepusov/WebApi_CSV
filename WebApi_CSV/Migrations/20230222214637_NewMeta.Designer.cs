@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebApi_CSV.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230221184750_AllTables")]
-    partial class AllTables
+    [Migration("20230222214637_NewMeta")]
+    partial class NewMeta
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,11 +30,11 @@ namespace WebApi_CSV.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AllTime")
-                        .HasColumnType("int");
+                    b.Property<long>("AllTime")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("AverageTimeWork")
-                        .HasColumnType("int");
+                    b.Property<float>("AverageTimeWork")
+                        .HasColumnType("real");
 
                     b.Property<float>("AverageValue")
                         .HasColumnType("real");

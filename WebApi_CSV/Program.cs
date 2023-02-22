@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi_CSV.Mapper;
+using WebApi_CSV.Middlewares;
+using WebApi_CSV.Services;
 
 internal class Program
 {
@@ -20,7 +23,8 @@ internal class Program
             
         }, contextLifetime: ServiceLifetime.Scoped);
 
-
+        builder.Services.AddScoped<DataService>();
+        builder.Services.AddAutoMapper(typeof(MapperProfile).Assembly);
         var app = builder.Build();
 
         // при запуске приложения выполняются миграции
@@ -43,6 +47,8 @@ internal class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.UseGlobalErrorWrapper();
 
         app.MapControllers();
 

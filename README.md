@@ -40,6 +40,8 @@
 - WebApi
 - Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.SqlServer
+- Deedle 
+- AutoMapper.Extensions.Microsoft.DependencyInjection
 - Swagger
 - СУБД MS SQL
 

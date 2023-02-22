@@ -27,11 +27,11 @@ namespace WebApi_CSV.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AllTime")
-                        .HasColumnType("int");
+                    b.Property<long>("AllTime")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("AverageTimeWork")
-                        .HasColumnType("int");
+                    b.Property<float>("AverageTimeWork")
+                        .HasColumnType("real");
 
                     b.Property<float>("AverageValue")
                         .HasColumnType("real");

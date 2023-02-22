@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebApi_CSV.Migrations
 {
     /// <inheritdoc />
-    public partial class AllTables : Migration
+    public partial class NewMeta : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,9 +16,9 @@ namespace WebApi_CSV.Migrations
                 columns: table => new
                 {
                     FileName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AllTime = table.Column<int>(type: "int", nullable: false),
+                    AllTime = table.Column<long>(type: "bigint", nullable: false),
                     MinDateTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    AverageTimeWork = table.Column<int>(type: "int", nullable: false),
+                    AverageTimeWork = table.Column<float>(type: "real", nullable: false),
                     AverageValue = table.Column<float>(type: "real", nullable: false),
                     MedianValue = table.Column<float>(type: "real", nullable: false),
                     MaxValue = table.Column<float>(type: "real", nullable: false),
