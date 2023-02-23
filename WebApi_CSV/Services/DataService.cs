@@ -30,26 +30,16 @@ namespace WebApi_CSV.Services
             }
 
             var df = await ConvertCSVtoFrame(files);
-            df.Print();
-
+            //df.Print();
             // Валидация данных 
             await Validate(df);
-
+            // Приведение значений 
+            List<ValueModel> valueModel = await ModelListValue(files.FileName, df);
             // Расчет показателей и в модель
             ResultModel resultModel = await CalculationOfResults(df);
             resultModel.FileName = files.FileName;
-
-            
-            Console.WriteLine("!!!! " + resultModel);
-            Console.WriteLine($@"FileName = {resultModel.FileName} ");
-            Console.WriteLine($@"AllTime = {resultModel.AllTime} ");
-            Console.WriteLine($@"AllTime = {resultModel.AllTime.Ticks} ");
-            Console.WriteLine($@"CountRows = {resultModel.CountRows} ");
-
-
-
             // Сохранение данных в БД
-            // await SavingDb(resultModel);
+            await SavingDb(valueModel, resultModel);
         }
 
 
@@ -109,26 +99,57 @@ namespace WebApi_CSV.Services
             return Task.CompletedTask;
         }
 
-        private async Task SavingDb(ResultModel resultModel)
+        private async Task SavingDb(List<ValueModel> valueModel, ResultModel resultModel)
         {
             var dbOldResult = await _context.Results
                 .Where(x => x.FileName == resultModel.FileName)
                 .ToListAsync();
 
+            var dbOldValues = await _context.Values
+                .Where(x => x.FileName == resultModel.FileName)
+                .ToListAsync();
+
             if (dbOldResult != null)
                 _context.Results.RemoveRange(dbOldResult);
-            // await _context.SaveChangesAsync();
 
+            if (dbOldValues != null)
+                _context.Values.RemoveRange(dbOldValues);
 
             // Добавление результатов
+            var dbValue = valueModel.Select(x => _mapper.Map<DAL.Entities.Values>(x));
+            await _context.Values.AddRangeAsync(dbValue);
+
             var dbResult = _mapper.Map<DAL.Entities.Results>(resultModel);
             await _context.Results.AddAsync(dbResult);
-
 
             await _context.SaveChangesAsync();
         }
 
 
+        private static Task<List<ValueModel>> ModelListValue(string FileName, Frame<int, string> df)
+        {
+            List<ValueModel> valueModels = new List<ValueModel>();
+            int row = df.RowCount;
+            string[] colomn_names_array = df.ColumnKeys.ToArray();
+            var DataTimedf = df.Columns[colomn_names_array[0]];
+            var timedf = df.Columns[colomn_names_array[1]];
+            var Valuedf = df.Columns[colomn_names_array[2]];
+
+            for (int i = 0; i < row; i++)
+            {
+                ValueModel tempVM = new ValueModel
+                {
+                    FileName = FileName,
+                    CreationDate = DateTimeOffset.ParseExact(DataTimedf.GetAt(i).ToString(), "yyyy-MM-dd_HH-mm-ss", null),
+                    WorkTime = int.Parse(timedf.GetAt(i).ToString()),
+                    Value = float.Parse(Valuedf.GetAt(i).ToString())
+
+                };
+                valueModels.Add(tempVM);
+            }
+
+            return Task.FromResult(valueModels);
+        }
 
 
         // Расчет показателей 
@@ -187,9 +208,6 @@ namespace WebApi_CSV.Services
                 return msftRaw;
             }
         }
-
-
-
 
 
     }
