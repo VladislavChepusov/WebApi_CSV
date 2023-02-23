@@ -27,6 +27,17 @@ namespace WebApi_CSV.Middlewares
                 context.Response.StatusCode = 419;
                 await context.Response.WriteAsJsonAsync(ex.Message);
             }
+
+            catch (ValidationException ex)
+            {
+                context.Response.StatusCode = 415;
+                await context.Response.WriteAsJsonAsync(ex.Message);
+            }
+            catch (SizeValidationException ex)
+            {
+                context.Response.StatusCode = 422;
+                await context.Response.WriteAsJsonAsync(ex.Message);
+            }
         }
     }
     public static class ErrorMiddlewareExtensions
