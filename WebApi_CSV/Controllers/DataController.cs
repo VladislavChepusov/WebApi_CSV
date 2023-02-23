@@ -47,12 +47,10 @@ namespace WebApi_CSV.Controllers
              => await _dataServiceGet.GetValues(FileName);
 
 
-
-
-   
-
-
-
+        // Метод 2
+        [HttpGet]
+        public async Task<IEnumerable<ResultModel>> GetResults([FromQuery] FilterModel filter)
+             => await _dataServiceGet.GetResult(filter);
 
 
 
