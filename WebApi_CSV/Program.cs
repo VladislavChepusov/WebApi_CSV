@@ -23,7 +23,8 @@ internal class Program
             
         }, contextLifetime: ServiceLifetime.Scoped);
 
-        builder.Services.AddScoped<DataService>();
+        builder.Services.AddScoped<DataServiceCreate>();
+        builder.Services.AddScoped<DataServiceGet>();
         builder.Services.AddAutoMapper(typeof(MapperProfile).Assembly);
         var app = builder.Build();
 

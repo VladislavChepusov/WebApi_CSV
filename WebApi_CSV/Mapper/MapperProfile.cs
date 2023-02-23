@@ -14,6 +14,10 @@ namespace WebApi_CSV.Mapper
 
             CreateMap<ValueModel, DAL.Entities.Values>()
                   .ForMember(d => d.Id, m => m.MapFrom(s => Guid.NewGuid()));
+
+
+            CreateMap<DAL.Entities.Values, ResponseValuesModel>();
+                
         }
     }
 }

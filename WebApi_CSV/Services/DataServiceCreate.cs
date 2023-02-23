@@ -9,11 +9,11 @@ using static WebApi_CSV.Exceptions.CustomExceptions;
 
 namespace WebApi_CSV.Services
 {
-    public class DataService
+    public class DataServiceCreate
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        public DataService(DataContext context, IMapper mapper)
+        public DataServiceCreate(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -208,6 +208,12 @@ namespace WebApi_CSV.Services
                 return msftRaw;
             }
         }
+
+
+
+
+
+
 
 
     }

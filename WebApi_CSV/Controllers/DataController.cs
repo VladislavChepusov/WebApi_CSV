@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Data;
-using System.IO;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApi_CSV.Models;
 using WebApi_CSV.Services;
-using static System.Net.WebRequestMethods;
 using static WebApi_CSV.Exceptions.CustomExceptions;
 
 namespace WebApi_CSV.Controllers
@@ -15,14 +11,17 @@ namespace WebApi_CSV.Controllers
     public class DataController : ControllerBase
     {
 
-        private readonly DataService _dataService;
+        private readonly DataServiceCreate _dataServiceCreate;
+        private readonly DataServiceGet _dataServiceGet;
 
-        public DataController(DataService dataService)
+        public DataController(DataServiceCreate dataServiceCreate, DataServiceGet dataServiceGet)
         {
-            _dataService = dataService;
+            _dataServiceCreate = dataServiceCreate;
+            _dataServiceGet = dataServiceGet;
         }
 
 
+        // Метод 1
         [HttpPost]
         public async Task UploadFile(IFormFile files)
         {
@@ -34,19 +33,28 @@ namespace WebApi_CSV.Controllers
             {
                 if (files != null)
                 {
-                    await _dataService.DataProcessing(files);
-
-                    /*
-                    using (var reader = new StreamReader(files.OpenReadStream()))
-                    {
-                        
-                        Console.WriteLine(await reader.ReadToEndAsync());
-                    }
-                    */
+                    await _dataServiceCreate.DataProcessing(files);
                 }
                 else
-                    throw new testNotFoundException();
-            }   
+                    throw new CSVException();
+            }
         }
+
+
+        // Метод 3 (ДОБАВИТЬ FILENOTFOUNDEXEPTION)
+        [HttpGet]
+        public async Task<IEnumerable<ResponseValuesModel>> GetValues(String FileName)
+             => await _dataServiceGet.GetValues(FileName);
+
+
+
+
+   
+
+
+
+
+
+
     }
 }
