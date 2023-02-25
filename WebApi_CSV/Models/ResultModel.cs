@@ -3,7 +3,7 @@
     public class ResultModel
     {
         public string FileName { get; set; } = "empty";
-        public TimeSpan AllTime { get; set; } //???????
+        public TimeSpan AllTime { get; set; } 
         public DateTimeOffset MinDateTime { get; set; }
         public double AverageTimeWork { get; set; }
         public double AverageValue { get; set; }

@@ -40,19 +40,15 @@ namespace WebApi_CSV.Controllers
             }
         }
 
-
-        // Метод 3 (ДОБАВИТЬ FILENOTFOUNDEXEPTION)
-        [HttpGet]
-        public async Task<IEnumerable<ResponseValuesModel>> GetValues(String FileName)
-             => await _dataServiceGet.GetValues(FileName);
-
-
         // Метод 2
         [HttpGet]
         public async Task<IEnumerable<ResultModel>> GetResults([FromQuery] FilterModel filter)
-             => await _dataServiceGet.GetResult(filter);
+             => await _dataServiceGet.GetResults(filter);
 
-
+        // Метод 3
+        [HttpGet]
+        public async Task<IEnumerable<ResponseValuesModel>> GetValues(String FileName)
+             => await _dataServiceGet.GetValues(FileName);
 
     }
 }

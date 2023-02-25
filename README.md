@@ -38,10 +38,11 @@
 ## Стек
 - .NET 6
 - WebApi
+- Swagger
+- СУБД MS SQL
 - Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.SqlServer
 - Deedle 
 - AutoMapper.Extensions.Microsoft.DependencyInjection
-- Swagger
-- СУБД MS SQL
+
 

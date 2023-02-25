@@ -30,9 +30,16 @@ namespace WebApi_CSV.Services
             }
 
             var df = await ConvertCSVtoFrame(files);
-            //df.Print();
             // Валидация данных 
             await Validate(df);
+
+            /*// Убрать расширение из имени файла
+            int fileExtPos = files.FileName.LastIndexOf(".");
+            string fileName = " ";
+            if (fileExtPos >= 0)
+                fileName = files.FileName.Substring(0, fileExtPos);
+            */
+
             // Приведение значений 
             List<ValueModel> valueModel = await ModelListValue(files.FileName, df);
             // Расчет показателей и в модель
@@ -75,8 +82,7 @@ namespace WebApi_CSV.Services
 
             DateTimeOffset CurrentMoment = DateTimeOffset.Now;
             DateTimeOffset InitialMoment = DateTimeOffset.Parse("01.01.2000");
-
-            // Проверка значений на несоблюдение условий
+            // Проверка значений на соблюдение условий
             var df2 = df.Where(r =>
             r.Value.TryGetAs<double>(column: colomn_names_array[2]).ValueOrDefault < 0
             ||
@@ -115,10 +121,10 @@ namespace WebApi_CSV.Services
             if (dbOldValues != null)
                 _context.Values.RemoveRange(dbOldValues);
 
-            // Добавление результатов
+            // Добавление Value
             var dbValue = valueModel.Select(x => _mapper.Map<DAL.Entities.Values>(x));
             await _context.Values.AddRangeAsync(dbValue);
-
+            // Добавление Result
             var dbResult = _mapper.Map<DAL.Entities.Results>(resultModel);
             await _context.Results.AddAsync(dbResult);
 
@@ -201,20 +207,11 @@ namespace WebApi_CSV.Services
             using (var ms = new MemoryStream())
             {
                 await files.CopyToAsync(ms);
-                //files.CopyTo(ms);
                 ms.Seek(0, SeekOrigin.Begin);
                 var msftRaw = Frame.ReadCsv(ms, separators: ";", hasHeaders: false, inferTypes: false);
-
                 return msftRaw;
             }
         }
-
-
-
-
-
-
-
 
     }
 }
